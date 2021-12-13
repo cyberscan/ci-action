@@ -10,7 +10,6 @@ Copyright (c) 2021 Deutsche Gesellschaft für Cybersicherheit mbH & Co. KG
 main routines
 """
 from argparse import ArgumentParser, ArgumentTypeError
-from functools import partial
 from logging import DEBUG, INFO, Formatter, getLogger, StreamHandler
 from pathlib import Path
 from .badges import CoverageBadge
