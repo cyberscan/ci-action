@@ -22,9 +22,6 @@ SUPPORTED_LANGUAGES = [
 ]
 
 
-def process_unit_test()
-
-
 def main(language, github_token):
     github = Github(github_token)
     commit_hash = environ["GITHUB_SHA"]
