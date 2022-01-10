@@ -29,7 +29,6 @@ def main(language, github_token):
     repo = github.get_repo(environ["GITHUB_REPOSITORY"])
     with open(environ["GITHUB_EVENT_PATH"]) as filehandler:
         event_dict = jsonload(filehandler)
-        print(event_dict)
 
     if language == "javascript":
         with open("junit.xml") as junit_file:
