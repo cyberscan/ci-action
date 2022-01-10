@@ -7,20 +7,19 @@ inputs:
   github-token:
     description: "Github API token."
     required: true
+  badge:
+    description: "Create badge."
+    default: false
 runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v2
-    - name: "Install action requirements."
-      run: python3 -m pip install -r ${{ github.action_path }}/requirements.txt
-      shell: bash
-    - name: "Install python testing requirements."
-      run: python3 -m pip install pytest coverage
+    - run: python3 -m pip -r "${{ github.action_path }}/requirements.txt" && python3 -m pip install pytest coverage
       shell: bash
       if: ${{ inputs.language == 'python' }}
-    - name: "Run python tests."
-      run: coverage run -m pytest --junitxml junit.xml || true && coverage report -m > coverage.txt
+    - run: coverage run -m pytest --junitxml junit.xml || true && coverage report -m > coverage.txt
       shell: bash
       if: ${{ inputs.language == 'python' }}
     - run: PYTHONPATH="${{ github.action_path }}" python3 -m action.action_main ${{ inputs.language }} ${{ inputs.github-token }}
+      if: ${{ inputs.language == 'python' }}
       shell: bash

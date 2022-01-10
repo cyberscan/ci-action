@@ -101,7 +101,8 @@ class CheckRunOutput(BaseGitData):
         Args:
             annotation (CheckRunAnnotation): annotation instance to add
         """
-        self.annotations.append(annotation.to_dict())
+        if len(self.annotations) < 50:
+            self.annotations.append(annotation.to_dict())
 
 
 @dataclass
