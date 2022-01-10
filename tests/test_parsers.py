@@ -13,7 +13,7 @@ from argparse import ArgumentTypeError
 from pytest import raises
 from pytest import mark
 
-from action.parsers import JestCoverageJsonSummaryParser, Parser, PythonCoverageParser
+from action.coverage import JestCoverageJsonSummaryParser, Parser, PythonCoverageParser
 
 
 def test_base_class():
@@ -43,13 +43,12 @@ def test_base_class():
     ]
 )
 def test_jest_coverage_json_summary_parser(metric, expected_cov):
-    with raises(ArgumentTypeError):
-        parser = JestCoverageJsonSummaryParser("bla")
-    parser = JestCoverageJsonSummaryParser(metric)
-    assert parser.metric == metric
+    parser = JestCoverageJsonSummaryParser()
+    with raises(ValueError):
+        parser.get_relative_coverage("bla")
     with open("data/test/jest-coverage-summary.json") as fh:
         parser.parse(fh)
-    assert parser.get_relative_coverage() == expected_cov
+    assert parser.get_relative_coverage(metric) == expected_cov
 
 
 @mark.parametrize(
@@ -61,10 +60,9 @@ def test_jest_coverage_json_summary_parser(metric, expected_cov):
     ]
 )
 def test_python_coverage_parser(metric, expected_cov):
-    with raises(ArgumentTypeError):
-        parser = PythonCoverageParser("functions")
-    parser = PythonCoverageParser(metric)
-    assert parser.metric == metric
+    parser = PythonCoverageParser()
+    with raises(ValueError):
+        parser.get_relative_coverage("functions")
     with open("data/test/python-coverage.json") as fh:
         parser.parse(fh)
-    assert parser.get_relative_coverage() == expected_cov
+    assert parser.get_relative_coverage(metric) == expected_cov

@@ -14,7 +14,7 @@ from logging import DEBUG, INFO, Formatter, getLogger, StreamHandler
 from pathlib import Path
 from .badges import CoverageBadge
 
-from .parsers import REGISTERED_PARSERS, CoverageReporter
+from .coverage import REGISTERED_PARSERS, CoverageReporter
 from . import ShieldIO6Color
 
 logger = getLogger(__file__)
@@ -78,13 +78,11 @@ if __name__ == "__main__":
 
     setup_logging(args.debug)
 
-    coverage_parser: CoverageReporter = REGISTERED_PARSERS[args.type](
-        args.metric
-    )
+    coverage_parser: CoverageReporter = REGISTERED_PARSERS[args.type]()
     with open(args.reportpath) as filehandler:
         coverage_parser.parse(filehandler)
     badge = CoverageBadge(
-        coverage_parser.get_relative_coverage(),
+        coverage_parser.get_relative_coverage(args.metric),
         args.thresholds
     )
     with open(args.badgepath, "w") as filehandler:
