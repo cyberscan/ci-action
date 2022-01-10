@@ -11,9 +11,6 @@ runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.9'
     - name: "Install action requirements."
       run: python3 -m pip install -r ${{ github.action_path }}/requirements.txt
       shell: bash
@@ -22,7 +19,7 @@ runs:
       shell: bash
       if: ${{ inputs.language == 'python' }}
     - name: "Run python tests."
-      run: coverage run -m pytest --junitxml junit.xml && coverage json
+      run: coverage run -m pytest --junitxml junit.xml && coverage report -m > coverage.txt
       shell: bash
       if: ${{ inputs.language == 'python' }}
     - run: PYTHONPATH="${{ github.action_path }}" python3 -m action.action_main ${{ inputs.language }} ${{ inputs.github-token }}
