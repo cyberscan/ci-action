@@ -53,3 +53,4 @@ def test_pytest():
     assert len(check_run_output.annotations) == 1
     assert check_run_output.annotations[0]["path"] == "tests/test_reports.py"
     assert check_run_output.annotations[0]["start_line"] == 16
+    assert 5 == 6
