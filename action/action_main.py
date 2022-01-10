@@ -27,6 +27,9 @@ def main(language, github_token):
     github = Github(github_token)
     commit_hash = environ["GITHUB_SHA"]
     repo = github.get_repo(environ["GITHUB_REPOSITORY"])
+    with open(environ["GITHUB_EVENT_PATH"]) as filehandler:
+        event_dict = jsonload(filehandler)
+        print(event_dict)
 
     if language == "javascript":
         with open("junit.xml") as junit_file:
@@ -45,8 +48,8 @@ def main(language, github_token):
 
     # upload PR Check
     repo.create_check_run(**junit.create_check_run(commit_hash).to_dict())
-    commit = repo.get_commit(commit_hash)
-    commit.create_comment("test test")
+    issue = repo.get_issue(event_dict["pull_request"]["number"])
+    issue.create_comment("tes test")
 
 
 if __name__ == "__main__":
