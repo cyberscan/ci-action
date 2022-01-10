@@ -22,6 +22,5 @@ runs:
       run: coverage run -m pytest --junitxml junit.xml; coverage report -m > coverage.txt
       shell: bash
       if: ${{ inputs.language == 'python' }}
-      continue-on-error: true
     - run: PYTHONPATH="${{ github.action_path }}" python3 -m action.action_main ${{ inputs.language }} ${{ inputs.github-token }}
       shell: bash
