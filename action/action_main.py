@@ -17,6 +17,8 @@ from os import environ
 from .reports import JESTJunitXML, PytestJunitXML
 from .coverage import JestCoverageJsonSummaryParser, PythonCoverageParser
 
+from pprint import pprint
+
 SUPPORTED_LANGUAGES = [
     "python",
     "javascript"
@@ -48,6 +50,7 @@ def main(language, github_token):
 
     # upload PR Check
     print(commit_hash)
+    pprint(event_dict)
     print(repo.create_check_run(**junit.create_check_run(commit_hash).to_dict()))
     issue = repo.get_issue(event_dict["pull_request"]["number"])
     issue.create_comment(f"```\n{coverage}```")
