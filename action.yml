@@ -5,7 +5,7 @@ inputs:
     description: "Choose language. Currently supported: 'python', 'javascript'."
     required: true
   github-token:
-    description: "Github API token.
+    description: "Github API token."
     required: true
 runs:
   using: "composite"
