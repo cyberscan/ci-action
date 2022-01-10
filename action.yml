@@ -7,7 +7,7 @@ inputs:
   github-token:
     description: "Github API token. Defaults to '${{ secrets.GITHUB_TOKEN }}'"
     required: true
-    default: ${{ secrets.GITHUB_TOKEN }}
+    #default: ${{ secrets.GITHUB_TOKEN }}
 runs:
   using: "composite"
   steps:
