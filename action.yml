@@ -19,7 +19,7 @@ runs:
       shell: bash
       if: ${{ inputs.language == 'python' }}
     - name: "Run python tests."
-      run: coverage run -m pytest --junitxml junit.xml; coverage report -m > coverage.txt
+      run: coverage run -m pytest --junitxml junit.xml || true && coverage report -m > coverage.txt
       shell: bash
       if: ${{ inputs.language == 'python' }}
     - run: PYTHONPATH="${{ github.action_path }}" python3 -m action.action_main ${{ inputs.language }} ${{ inputs.github-token }}
