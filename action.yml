@@ -19,10 +19,10 @@ runs:
     - name: "Install python testing requirements."
       run: python3 -m pip install pytest coverage
       shell: bash
-      if: ${{ language == 'python' }}
+      if: ${{ inputs.language == 'python' }}
     - name: "Run python tests."
       run: coverage run -m pytest --junitxml junit.xml && coverage json
       shell: bash
-      if: ${{ language == 'python' }}
+      if: ${{ inputs.language == 'python' }}
     - run: PYTHONPATH="${{ github.action_path }}" python3 -m action.action_main ${{ inputs.language }} ${{ inputs.github-token }}
       shell: bash
