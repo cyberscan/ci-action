@@ -13,7 +13,16 @@ runs:
     - uses: actions/setup-python@v2
       with:
         python-version: '3.9'
-    - run: python3 -m pip install -r ${{ github.action_path }}/requirements.txt
+    - name: "Install action requirements."
+      run: python3 -m pip install -r ${{ github.action_path }}/requirements.txt
       shell: bash
+    - name: "Install python testing requirements."
+      run: python3 -m pip install pytest coverage
+      shell: bash
+      if: ${{ language == 'python' }}
+    - name: "Run python tests."
+      run: coverage run -m pytest --junitxml junit.xml && coverage json
+      shell: bash
+      if: ${{ language == 'python' }}
     - run: PYTHONPATH="${{ github.action_path }}" python3 -m action.action_main ${{ inputs.language }} ${{ inputs.github-token }}
       shell: bash
