@@ -43,14 +43,13 @@ def main(language, github_token):
         #     coverage.parse(cov_file)
         with open("coverage.txt") as cov_file:
             coverage = cov_file.read()
-            print(coverage)
     else:
         raise ArgumentError("Unknown language.")
 
     # upload PR Check
     repo.create_check_run(**junit.create_check_run(commit_hash).to_dict())
     issue = repo.get_issue(event_dict["pull_request"]["number"])
-    issue.create_comment(f"```{coverage}```")
+    issue.create_comment(f"```\n{coverage}```")
 
 
 if __name__ == "__main__":
