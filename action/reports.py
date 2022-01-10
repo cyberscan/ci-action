@@ -62,8 +62,8 @@ class JUnitXML:
             conclusion="failure"
             if self.nfailures > 0 or self.nerrors > 0
             else "success",
-            started_at=self.start_time.isoformat(),
-            completed_at=self.end_time.isoformat()
+            started_at=self.start_time,
+            completed_at=self.end_time
         )
         check_run.add_output(self.create_check_run_output())
         return check_run
