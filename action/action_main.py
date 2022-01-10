@@ -36,7 +36,6 @@ def main(language, github_token):
             junit = JESTJunitXML.from_file(junit_file)
         with open("coverage.json") as cov_file:
             coverage = JestCoverageJsonSummaryParser()
-            coverage.parse(cov_file)
     elif language == "python":
         with open("junit.xml") as junit_file:
             junit = PytestJunitXML.from_file(junit_file)
@@ -45,6 +44,7 @@ def main(language, github_token):
         #     coverage.parse(cov_file)
         with open("coverage.txt") as cov_file:
             coverage = cov_file.read()
+            print(coverage)
     else:
         raise ArgumentError("Unknown language.")
 
