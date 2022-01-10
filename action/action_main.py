@@ -11,6 +11,7 @@ main procedure of action
 """
 from argparse import ArgumentError, ArgumentParser
 from github.MainClass import Github
+from json import load as jsonload
 from os import environ
 
 from .reports import JESTJunitXML, PytestJunitXML
@@ -44,6 +45,8 @@ def main(language, github_token):
 
     # upload PR Check
     repo.create_check_run(**junit.create_check_run(commit_hash).to_dict())
+    commit = repo.get_commit(commit_hash)
+    commit.create_comment("test test")
 
 
 if __name__ == "__main__":
