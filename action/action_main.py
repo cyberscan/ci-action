@@ -43,7 +43,7 @@ def main(language, github_token):
         raise ArgumentError("Unknown language.")
 
     # upload PR Check
-    repo.create_check_run(**junit.create_check_run(commit_hash))
+    repo.create_check_run(junit.create_check_run(commit_hash))
 
 
 if __name__ == "__main__":
