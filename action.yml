@@ -15,5 +15,5 @@ runs:
         python-version: '3.9'
     - run: python3 -m pip install -r ${{ github.action_path }}/requirements.txt
       shell: bash
-    - run: PYTHONPATH="${{ github.action_path }}" python3 -m action/action_main ${{ inputs.language }} ${{ inputs.github-token }}
+    - run: PYTHONPATH="${{ github.action_path }}" python3 -m action.action_main ${{ inputs.language }} ${{ inputs.github-token }}
       shell: bash
