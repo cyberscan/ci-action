@@ -47,7 +47,7 @@ def main(language, github_token):
         raise ArgumentError("Unknown language.")
 
     # upload PR Check
-    repo.create_check_run(**junit.create_check_run(commit_hash).to_dict())
+    print(repo.create_check_run(**junit.create_check_run(commit_hash).to_dict()))
     issue = repo.get_issue(event_dict["pull_request"]["number"])
     issue.create_comment(f"```\n{coverage}```")
 
