@@ -26,22 +26,28 @@ runs:
       if: ${{ inputs.language == 'python' && always() }}
       id: vars
       shell: bash
+    - uses: actions/checkout@v2
+      with:
+        ref: badge
+      if: ${{ inputs.badge && always() }}
     - run: |
+#        git config user.name "GitHub Actions Bot"
+#        git config user.email "<>"
+#        branches="$(git branch)"
+#        if [[ "$branches" != *"badge"* ]]; then
+#          git checkout --orphan badge
+#          git reset --hard
+#        else
+#          git fetch origin badge
+#          git switch badge
+#          git pull
+#        fi
         git config user.name "GitHub Actions Bot"
         git config user.email "<>"
-        branches="$(git branch)"
-        if [[ "$branches" != *"badge"* ]]; then
-          git checkout --orphan badge
-          git reset --hard
-        else
-          git fetch origin badge
-          git switch badge
-          git pull
-        fi
         PYTHONPATH="${{ github.action_path }}" python3 -m action.create_badge ${{ steps.vars.outputs.coverage }} > coverage.svg
         git add coverage.svg
         git commit -m "update badge" coverage.svg
-        git push -u origin badge
+        git push
       if: ${{ inputs.language == 'python' && inputs.badge && always() }}
       shell: bash
     
