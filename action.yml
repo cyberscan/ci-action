@@ -30,12 +30,12 @@ runs:
         git config user.name "GitHub Actions Bot"
         git config user.email "<>"
         if ! git switch badge; then
-          git checkout --orphan badge --track origin/badge
+          git checkout --orphan badge
           git reset --hard
         fi
         PYTHONPATH="${{ github.action_path }}" python3 -m action.create_badge python-coverage "$HOME/coverage.json" coverage.svg
         git commit -m "update badge" coverage.svg
-        git push
+        git push -u origin/badge
       if: ${{ inputs.language == 'python' && inputs.badge && always() }}
       shell: bash
     
