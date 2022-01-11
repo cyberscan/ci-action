@@ -27,10 +27,13 @@ SUPPORTED_LANGUAGES = [
 
 def main(language, github_token):
     github = Github(github_token)
-    commit_hash = environ["GITHUB_SHA"]
     repo = github.get_repo(environ["GITHUB_REPOSITORY"])
     with open(environ["GITHUB_EVENT_PATH"]) as filehandler:
         event_dict = jsonload(filehandler)
+    if "after" in event_dict:
+        commit_hash = event_dict["after"]
+    else:
+        commit_hash = environ["GITHUB_SHA"]
 
     if language == "javascript":
         with open("junit.xml") as junit_file:
@@ -49,12 +52,12 @@ def main(language, github_token):
         raise ArgumentError("Unknown language.")
 
     # upload PR Check
-    print(commit_hash)
-    pprint(event_dict)
-    print(repo.create_check_run(
-        **junit.create_check_run(event_dict["after"]).to_dict()))
-    issue = repo.get_issue(event_dict["pull_request"]["number"])
-    issue.create_comment(f"```\n{coverage}```")
+    repo.create_check_run(
+        **junit.create_check_run(commit_hash).to_dict()
+    )
+    if "pull_request" in event_dict:
+        issue = repo.get_issue(event_dict["pull_request"]["number"])
+        issue.create_comment(f"```\n{coverage}```")
 
 
 if __name__ == "__main__":

@@ -29,7 +29,8 @@ runs:
         coverage json > "$HOME/coverage.json"
         git config user.name "GitHub Actions Bot"
         git config user.email "<>"
-        if ! git switch badge; then
+        branches="$(git branch)"
+        if [[ "$branches" != *"badge"* ]]; then
           git checkout --orphan badge
           git reset --hard
         fi
