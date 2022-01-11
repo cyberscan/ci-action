@@ -14,7 +14,7 @@ runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v2
-    - run: python3 -m pip -r "${{ github.action_path }}/requirements.txt"
+    - run: python3 -m pip install -r "${{ github.action_path }}/requirements.txt"
       shell: bash
       if: ${{ inputs.language == 'python' }}
     - run: coverage run -m pytest --junitxml junit.xml
