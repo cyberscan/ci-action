@@ -35,7 +35,7 @@ runs:
         git config user.email "<>"
         PYTHONPATH="${{ github.action_path }}" python3 -m action.create_badge ${{ steps.vars.outputs.coverage }} > coverage.svg
         git add coverage.svg
-        git commit -m "update badge" coverage.svg
+        git commit -m "update badge" coverage.svg || true
         git push
       if: ${{ inputs.language == 'python' && inputs.badge && always() }}
       shell: bash
