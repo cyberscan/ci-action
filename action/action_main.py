@@ -53,7 +53,7 @@ def main(language, github_token):
         raise ArgumentError("Unknown language.")
 
     print(
-        "::set-env name=COVERAGE::%d" % (
+        "::set-output name=coverage::%d" % (
             coverage.get_relative_coverage('statements')
         )
     )

@@ -24,6 +24,7 @@ runs:
       if: ${{ inputs.language == 'python' && always() }}
     - run: PYTHONPATH="${{ github.action_path }}" python3 -m action.action_main ${{ inputs.language }} ${{ inputs.github-token }}
       if: ${{ inputs.language == 'python' && always() }}
+      id: vars
       shell: bash
     - run: |
         git config user.name "GitHub Actions Bot"
@@ -33,7 +34,7 @@ runs:
           git checkout --orphan badge
           git reset --hard
         fi
-        PYTHONPATH="${{ github.action_path }}" python3 -m action.create_badge $COVERAGE > coverage.svg
+        PYTHONPATH="${{ github.action_path }}" python3 -m action.create_badge ${{ steps.vars.outputs.coverage }} > coverage.svg
         git commit -m "update badge" coverage.svg
         git push -u origin/badge
       if: ${{ inputs.language == 'python' && inputs.badge && always() }}
