@@ -35,6 +35,8 @@ runs:
         fi
         PYTHONPATH="${{ github.action_path }}" python3 -m action.create_badge python-coverage "$HOME/coverage.json" coverage.svg
         git commit -m "update badge" coverage.svg
+        echo "hi"
+        git remote -v
         git push -u origin/badge
       if: ${{ inputs.language == 'python' && inputs.badge && always() }}
       shell: bash
