@@ -31,17 +31,6 @@ runs:
         ref: badge
       if: ${{ inputs.badge && always() }}
     - run: |
-#        git config user.name "GitHub Actions Bot"
-#        git config user.email "<>"
-#        branches="$(git branch)"
-#        if [[ "$branches" != *"badge"* ]]; then
-#          git checkout --orphan badge
-#          git reset --hard
-#        else
-#          git fetch origin badge
-#          git switch badge
-#          git pull
-#        fi
         git config user.name "GitHub Actions Bot"
         git config user.email "<>"
         PYTHONPATH="${{ github.action_path }}" python3 -m action.create_badge ${{ steps.vars.outputs.coverage }} > coverage.svg
