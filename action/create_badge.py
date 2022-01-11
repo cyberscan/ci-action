@@ -47,13 +47,6 @@ if __name__ == "__main__":
     parser.add_argument("-d", "--debug", action="store_true",
                         help="activate debug log")
     parser.add_argument(
-        "-m", "--metric",
-        choices=["statements", "lines", "branches", "functions"],
-        default="lines",
-        help="Choose which metric is used for coverage calculation. "
-        "Default is 'lines'."
-    )
-    parser.add_argument(
         "-t", "--thresholds", type=ShieldIO6Color,
         help="The badge displays a color palette consisting of 6 colors "
         "reaching from red to green. Choose the threshold of which color is "
@@ -65,25 +58,13 @@ if __name__ == "__main__":
         default="90,80,70,60,50"
     )
     parser.add_argument(
-        "type", choices=REGISTERED_PARSERS.keys(),
-        help=f"Select report type from {list(REGISTERED_PARSERS.keys())}."
-    )
-    parser.add_argument(
-        "reportpath", type=Path, help="Select report file."
-    )
-    parser.add_argument(
-        "badgepath", type=Path, help="Select badge output file."
+        "coverage", type=int, help="Relative coverage."
     )
     args = parser.parse_args()
 
     setup_logging(args.debug)
-
-    coverage_parser: CoverageReporter = REGISTERED_PARSERS[args.type]()
-    with open(args.reportpath) as filehandler:
-        coverage_parser.parse(filehandler)
     badge = CoverageBadge(
-        coverage_parser.get_relative_coverage(args.metric),
+        args.coverage,
         args.thresholds
     )
-    with open(args.badgepath, "w") as filehandler:
-        badge.dump(filehandler)
+    print(badge.dumps())

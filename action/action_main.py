@@ -40,24 +40,30 @@ def main(language, github_token):
             junit = JESTJunitXML.from_file(junit_file)
         with open("coverage.json") as cov_file:
             coverage = JestCoverageJsonSummaryParser()
+            coverage.parse(cov_file)
     elif language == "python":
         with open("junit.xml") as junit_file:
             junit = PytestJunitXML.from_file(junit_file)
-        # with open("coverage.json") as cov_file:
-        #     coverage = PythonCoverageParser()
-        #     coverage.parse(cov_file)
+        with open("coverage.json") as cov_file:
+            coverage = PythonCoverageParser()
+            coverage.parse(cov_file)
         with open("coverage.txt") as cov_file:
-            coverage = cov_file.read()
+            coverage_raw = cov_file.read()
     else:
         raise ArgumentError("Unknown language.")
 
+    print(
+        "::set-env name=COVERAGE::%d" % (
+            coverage.get_relative_coverage('statements')
+        )
+    )
     # upload PR Check
     repo.create_check_run(
         **junit.create_check_run(commit_hash).to_dict()
     )
     if "pull_request" in event_dict:
         issue = repo.get_issue(event_dict["pull_request"]["number"])
-        issue.create_comment(f"```\n{coverage}```")
+        issue.create_comment(f"```\n{coverage_raw}```")
 
 
 if __name__ == "__main__":

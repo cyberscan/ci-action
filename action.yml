@@ -19,14 +19,13 @@ runs:
     - run: coverage run -m pytest --junitxml junit.xml
       shell: bash
       if: ${{ inputs.language == 'python' }}
-    - run: coverage report -m > coverage.txt
+    - run: coverage report -m > coverage.txt && coverage json > coverage.json
       shell: bash
       if: ${{ inputs.language == 'python' && always() }}
     - run: PYTHONPATH="${{ github.action_path }}" python3 -m action.action_main ${{ inputs.language }} ${{ inputs.github-token }}
       if: ${{ inputs.language == 'python' && always() }}
       shell: bash
     - run: |
-        coverage json > "$HOME/coverage.json"
         git config user.name "GitHub Actions Bot"
         git config user.email "<>"
         branches="$(git branch)"
@@ -34,10 +33,8 @@ runs:
           git checkout --orphan badge
           git reset --hard
         fi
-        PYTHONPATH="${{ github.action_path }}" python3 -m action.create_badge python-coverage "$HOME/coverage.json" coverage.svg
+        PYTHONPATH="${{ github.action_path }}" python3 -m action.create_badge $COVERAGE > coverage.svg
         git commit -m "update badge" coverage.svg
-        echo "hi"
-        git remote -v
         git push -u origin/badge
       if: ${{ inputs.language == 'python' && inputs.badge && always() }}
       shell: bash

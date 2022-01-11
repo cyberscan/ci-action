@@ -30,8 +30,9 @@ class CoverageBadge:
 
     color: InitVar[BadgeColor]
 
-    template: ClassVar[str] = field(repr=False, default='''
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="96" height="20" role="img" aria-label="coverage: {relative_coverage}%">
+    template: ClassVar[str] = field(
+        repr=False,
+        default='''<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="96" height="20" role="img" aria-label="coverage: {relative_coverage}%">
     <title>coverage: {relative_coverage}%</title>
 	<linearGradient id="s" x2="0" y2="100%">
 		<stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
