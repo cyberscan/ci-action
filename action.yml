@@ -29,8 +29,7 @@ runs:
         coverage json > "$HOME/coverage.json"
         git config user.name "GitHub Actions Bot"
         git config user.email "<>"
-        git checkout badge
-        if [ $? -ne 0 ]; then
+        if ! git switch badge; then
           git checkout --orphan badge --track origin/badge
           git reset --hard
         fi
