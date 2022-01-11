@@ -32,10 +32,7 @@ def test_junit():
     assert junit.title == 'jest tests'
     check_run_output = junit.create_check_run_output()
     assert check_run_output.summary == junit.get_summary()
-    assert len(check_run_output.annotations) == sum([
-        len(testcase.findall("./*"))
-        for testcase in xml.findall(".//testcase")
-    ])
+    assert len(check_run_output.annotations) == 50
 
 
 def test_pytest():
