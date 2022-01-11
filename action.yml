@@ -26,3 +26,18 @@ runs:
     - run: PYTHONPATH="${{ github.action_path }}" python3 -m action.action_main ${{ inputs.language }} ${{ inputs.github-token }}
       if: ${{ inputs.language == 'python' && always() }}
       shell: bash
+    - run: |
+        coverage json > "$HOME/coverage.json"
+        git config user.name "GitHub Actions Bot"
+        git config user.email "<>"
+        git checkout badge
+        if [ $? -ne 0 ]; then
+          git checkout --orphan badge --track origin/badge
+          git reset --hard
+        fi
+        PYTHONPATH="${{ github.action_path }}" python3 -m action.create_badge python-coverage "$HOME/coverage.json" coverage.svg
+        git commit -m "update badge" coverage.svg
+        git push
+      if: ${{ inputs.language == 'python' && inputs.badge && always() }}
+      shell: bash
+    
