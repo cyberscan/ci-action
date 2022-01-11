@@ -36,6 +36,7 @@ runs:
         else
           git fetch origin badge
           git switch badge
+          git pull
         fi
         PYTHONPATH="${{ github.action_path }}" python3 -m action.create_badge ${{ steps.vars.outputs.coverage }} > coverage.svg
         git add coverage.svg
