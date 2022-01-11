@@ -15,15 +15,19 @@ runs:
   steps:
     - run: python3 -m pip install -r "${{ github.action_path }}/requirements.txt"
       shell: bash
-      if: ${{ inputs.language == 'python' }}
     - run: coverage run -m pytest --junitxml junit.xml
       shell: bash
       if: ${{ inputs.language == 'python' }}
+    - run: |
+        yarn add jest-junit
+        yarn test --ci --reporters=default --reporters=jest-junit --coverage --testLocationInResults --coverageReporters="json-summary" | tee jest.txt
+      shell: bash
+      if: ${{ inputs.language == 'javascript' }}
     - run: coverage report -m > coverage.txt && coverage json
       shell: bash
       if: ${{ inputs.language == 'python' && always() }}
     - run: PYTHONPATH="${{ github.action_path }}" python3 -m action.action_main ${{ inputs.language }} ${{ inputs.github-token }}
-      if: ${{ inputs.language == 'python' && always() }}
+      if: ${{ always() }}
       id: vars
       shell: bash
     - uses: actions/checkout@v2
@@ -37,6 +41,6 @@ runs:
         git add coverage.svg
         git commit -m "update badge" coverage.svg || true
         git push
-      if: ${{ inputs.language == 'python' && inputs.badge && always() }}
+      if: ${{ inputs.badge && always() }}
       shell: bash
     
