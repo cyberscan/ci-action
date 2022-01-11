@@ -14,12 +14,15 @@ runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v2
-    - run: python3 -m pip -r "${{ github.action_path }}/requirements.txt" && python3 -m pip install pytest coverage
+    - run: python3 -m pip -r "${{ github.action_path }}/requirements.txt"
       shell: bash
       if: ${{ inputs.language == 'python' }}
-    - run: coverage run -m pytest --junitxml junit.xml || true && coverage report -m > coverage.txt
+    - run: coverage run -m pytest --junitxml junit.xml
       shell: bash
       if: ${{ inputs.language == 'python' }}
+    - run: coverage report -m > coverage.txt
+      shell: bash
+      if: ${{ inputs.language == 'python' && always() }}
     - run: PYTHONPATH="${{ github.action_path }}" python3 -m action.action_main ${{ inputs.language }} ${{ inputs.github-token }}
-      if: ${{ inputs.language == 'python' }}
+      if: ${{ inputs.language == 'python' && always() }}
       shell: bash
