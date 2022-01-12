@@ -13,9 +13,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: echo "hello"
-      shell: bash
-    - run: python3 -m pip install -r "${{ github.action_path }}/requirements.txt
+    - run: python3 -m pip install -r "${{ github.action_path }}/requirements.txt"
       shell: bash
     - run: coverage run -m pytest --junitxml junit.xml || true
       shell: bash
