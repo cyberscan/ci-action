@@ -21,7 +21,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
       - name: "Install requirements."
-        run: python3 -m pip install -r ${{ github.action_path }}/requirements.txt
+        run: python3 -m pip install -r requirements.txt
         shell: bash
       - name: "Install linter requirements."
         run: python3 -m pip install flake8 black
