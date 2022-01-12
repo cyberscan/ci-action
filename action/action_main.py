@@ -77,7 +77,7 @@ def main(language, github_token):
         coverage_raw = "<details><summary><link>expand</link>\n" + \
             f"<pre>{summary}</pre></summary><pre>{details}</pre></details>"
         issue = repo.get_issue(event_dict["pull_request"]["number"])
-        issue.create_comment(f"```\n{coverage_raw}```")
+        issue.create_comment(coverage_raw)
 
 
 if __name__ == "__main__":
