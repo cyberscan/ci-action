@@ -13,8 +13,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: echo "hi"
-      shell: bash
     - run: python3 -m pip install -r "${{ github.action_path }}/requirements.txt"
       shell: bash
     - run: coverage run -m pytest --junitxml junit.xml
@@ -36,6 +34,20 @@ runs:
       with:
         ref: badge
       if: ${{ inputs.badge && always() }}
+    - uses: actions/checkout@v2
+      if: ${{ steps.badge.status == 'failure' }}
+    - run: |
+        git checkout --orphan badge
+        git reset
+        touch coverage.svg
+        git add coverage.svg
+        git commit -m "init badge" coverage.svg
+        git push -u origin badge
+      if: ${{ steps.badge.status == 'failure' }}
+    - uses: actions/checkout@v2
+      with:
+        ref: badge
+      if: ${{ steps.badge.status == 'failure' }}
     - run: |
         git config user.name "GitHub Actions Bot"
         git config user.email "<>"
@@ -43,6 +55,6 @@ runs:
         git add coverage.svg
         git commit -m "update badge" coverage.svg || true
         git push
-      if: ${{ inputs.badge && always() }}
+      if: ${{ steps.badge.status == 'success' }}
       shell: bash
     
