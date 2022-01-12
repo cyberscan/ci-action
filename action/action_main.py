@@ -18,6 +18,8 @@ from re import search as research, MULTILINE
 from .reports import JESTJunitXML, PytestJunitXML
 from .coverage import JestCoverageJsonSummaryParser, PythonCoverageParser
 
+from pprint import pprint
+
 SUPPORTED_LANGUAGES = [
     "python",
     "javascript"
@@ -62,10 +64,11 @@ def main(language, github_token):
         )
     )
     # upload PR Check
-    check_run = junit.create_check_run(commit_hash).to_dict()
+    check_run = junit.create_check_run(commit_hash)
     print(
-        repo.create_check_run(**check_run)
+        repo.create_check_run(**check_run.to_dict())
     )
+    pprint(check_run.to_dict())
     if "pull_request" in event_dict:
         issue = repo.get_issue(event_dict["pull_request"]["number"])
         issue.create_comment(f"```\n{coverage_raw}```")
