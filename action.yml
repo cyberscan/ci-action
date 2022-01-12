@@ -44,6 +44,7 @@ runs:
         git commit -m "init badge" coverage.svg
         git push -u origin badge
       if: ${{ steps.badge.status == 'failure' }}
+      shell: bash
     - uses: actions/checkout@v2
       with:
         ref: badge
