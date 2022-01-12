@@ -31,6 +31,7 @@ runs:
       id: vars
       shell: bash
     - run: |
+        git branch -a
         if [[ "$(git branch -a)" == *"origin/badge"* ]]; then
           echo 'badge branch exists'
         else
