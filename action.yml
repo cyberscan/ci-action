@@ -30,25 +30,29 @@ runs:
       if: ${{ always() }}
       id: vars
       shell: bash
-    - uses: actions/checkout@v2
-      with:
-        ref: badge
-      if: ${{ inputs.badge && always() }}
-    - uses: actions/checkout@v2
-      if: ${{ steps.badge.outcome == 'failure' }}
     - run: |
+        if [[ "$(git branch -a)" == *"origin/badge"* ]]; then
+          echo '::set-output name=exists::true'
+        else
+          echo '::set-output name=exists::false'
+        fi
+      id: badge
+      shell: bash
+      if: ${{ inputs.badge && always() }}
+    - run: |
+        git reset --hard
         git checkout --orphan badge
         git reset
         touch coverage.svg
         git add coverage.svg
         git commit -m "init badge" coverage.svg
         git push -u origin badge
-      if: ${{ steps.badge.outcome == 'failure' }}
+      if: ${{ inputs.badge && always() && steps.vars.outputs.exists == 'false' }}
       shell: bash
     - uses: actions/checkout@v2
       with:
         ref: badge
-      if: ${{ steps.badge.outcome == 'failure' }}
+      if: ${{ inputs.badge && always() }}
     - run: |
         git config user.name "GitHub Actions Bot"
         git config user.email "<>"
@@ -56,6 +60,6 @@ runs:
         git add coverage.svg
         git commit -m "update badge" coverage.svg || true
         git push
-      if: ${{ steps.badge.outcome == 'success' }}
+      if: ${{ inputs.badge && always() }}
       shell: bash
     
