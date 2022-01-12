@@ -43,9 +43,11 @@ def main(language, github_token):
             coverage = JestCoverageJsonSummaryParser()
             coverage.parse(cov_file)
         with open("jest.txt") as rawfile:
-            coverage_raw = research(
+            coverage_lines = research(
                 r"(^-+\|[\w\W]*\|-+$)", rawfile.read(), MULTILINE
-            )[1]
+            )[1].split("\n")
+            summary = "\n".join(coverage_lines[:4])
+            details = "\n".join(coverage_lines[4:])
 
     elif language == "python":
         with open("junit.xml") as junit_file:
@@ -54,7 +56,9 @@ def main(language, github_token):
             coverage = PythonCoverageParser()
             coverage.parse(cov_file)
         with open("coverage.txt") as cov_file:
-            coverage_raw = cov_file.read()
+            coverage_lines = cov_file.read().split("\n")
+            summary = "\n".join(coverage_lines[:2] + coverage_lines[-2:-1])
+            details = "\n".join(coverage_lines[2:-2])
     else:
         raise ArgumentError("Unknown language.")
 
@@ -70,6 +74,8 @@ def main(language, github_token):
     )
     pprint(check_run.to_dict())
     if "pull_request" in event_dict:
+        coverage_raw = "<details><summary><link>expand</link>\n" + \
+            f"<pre>{summary}</pre></summary><pre>{details}</pre></details>"
         issue = repo.get_issue(event_dict["pull_request"]["number"])
         issue.create_comment(f"```\n{coverage_raw}```")
 
