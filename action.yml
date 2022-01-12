@@ -20,7 +20,7 @@ runs:
       if: ${{ inputs.language == 'python' }}
     - run: |
         yarn add jest-junit
-        yarn test --ci --reporters=default --reporters=jest-junit --coverage --testLocationInResults --coverageReporters="json-summary" | tee jest.txt
+        yarn test:default-backend --ci --reporters=default --reporters=jest-junit --coverage --testLocationInResults --coverageReporters="json-summary" --coverageReporters="text-summary" | tee jest.txt
       shell: bash
       if: ${{ inputs.language == 'javascript' }}
     - run: coverage report -m > coverage.txt && coverage json

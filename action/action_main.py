@@ -44,7 +44,8 @@ def main(language, github_token):
             coverage.parse(cov_file)
         with open("jest.txt") as rawfile:
             coverage_raw = research(
-                r"(^-+\|[\w\W]*\|-+$)", rawfile.read(), MULTILINE)[1]
+                r"(^-+\|[\w\W]*\|-+$)", rawfile.read(), MULTILINE
+            )[1]
 
     elif language == "python":
         with open("junit.xml") as junit_file:
