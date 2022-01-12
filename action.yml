@@ -32,23 +32,19 @@ runs:
       shell: bash
     - run: |
         if [[ "$(git branch -a)" == *"origin/badge"* ]]; then
-          echo '::set-output name=exists::true'
+          echo 'badge branch exists'
         else
-          echo '::set-output name=exists::false'
+          git reset --hard
+          git checkout --orphan badge
+          git reset
+          touch coverage.svg
+          git add coverage.svg
+          git commit -m "init badge" coverage.svg
+          git push -u origin badge
         fi
       id: badge
       shell: bash
       if: ${{ inputs.badge && always() }}
-    - run: |
-        git reset --hard
-        git checkout --orphan badge
-        git reset
-        touch coverage.svg
-        git add coverage.svg
-        git commit -m "init badge" coverage.svg
-        git push -u origin badge
-      if: ${{ inputs.badge && always() && steps.vars.outputs.exists == 'false' }}
-      shell: bash
     - uses: actions/checkout@v2
       with:
         ref: badge
