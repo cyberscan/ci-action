@@ -35,7 +35,7 @@ runs:
         ref: badge
       if: ${{ inputs.badge && always() }}
     - uses: actions/checkout@v2
-      if: ${{ steps.badge.status == 'failure' }}
+      if: ${{ steps.badge.outcome == 'failure' }}
     - run: |
         git checkout --orphan badge
         git reset
@@ -43,12 +43,12 @@ runs:
         git add coverage.svg
         git commit -m "init badge" coverage.svg
         git push -u origin badge
-      if: ${{ steps.badge.status == 'failure' }}
+      if: ${{ steps.badge.outcome == 'failure' }}
       shell: bash
     - uses: actions/checkout@v2
       with:
         ref: badge
-      if: ${{ steps.badge.status == 'failure' }}
+      if: ${{ steps.badge.outcome == 'failure' }}
     - run: |
         git config user.name "GitHub Actions Bot"
         git config user.email "<>"
@@ -56,6 +56,6 @@ runs:
         git add coverage.svg
         git commit -m "update badge" coverage.svg || true
         git push
-      if: ${{ steps.badge.status == 'success' }}
+      if: ${{ steps.badge.outcome == 'success' }}
       shell: bash
     
