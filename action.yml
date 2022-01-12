@@ -39,6 +39,8 @@ runs:
           git reset
           touch coverage.svg
           git add coverage.svg
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
           git commit -m "init badge" coverage.svg
           git push -u origin badge
         fi
