@@ -13,7 +13,7 @@ from argparse import ArgumentError, ArgumentParser
 from github.MainClass import Github
 from json import load as jsonload
 from os import environ
-from re import search as research
+from re import search as research, MULTILINE
 
 from .reports import JESTJunitXML, PytestJunitXML
 from .coverage import JestCoverageJsonSummaryParser, PythonCoverageParser
@@ -44,7 +44,7 @@ def main(language, github_token):
             coverage.parse(cov_file)
         with open("jest.txt") as rawfile:
             coverage_raw = research(
-                r"(^-+\|[\w\W]*\|-+$)", rawfile.read(), re.MULTILINE)[1]
+                r"(^-+\|[\w\W]*\|-+$)", rawfile.read(), MULTILINE)[1]
 
     elif language == "python":
         with open("junit.xml") as junit_file:
