@@ -14,7 +14,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: echo "TEST!!!"
+    - run: echo "TEST!!!!"
       shell: bash
     # Install requirements
     - run: python3 -m pip install -r "${{ github.action_path }}/requirements.txt"
