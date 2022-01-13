@@ -8,7 +8,7 @@ inputs:
     description: "Github API token."
     required: true
   badge:
-    description: "Create badge."
+    description: "Create coverage badge."
     default: ${{ false }}
 
 runs:

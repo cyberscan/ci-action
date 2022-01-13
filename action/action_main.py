@@ -72,8 +72,8 @@ def main(language, github_token):
     repo.create_check_run(**check_run.to_dict())
 
     if "pull_request" in event_dict:
-        coverage_raw = "<details><summary><link>expand</link>\n" +
-        f"<pre>{summary}</pre></summary><pre>{details}</pre></details>"
+        coverage_raw = "<details><summary><link>expand</link>\n" + \
+            f"<pre>{summary}</pre></summary><pre>{details}</pre></details>"
         issue = repo.get_issue(event_dict["pull_request"]["number"])
         issue.create_comment(coverage_raw)
 
