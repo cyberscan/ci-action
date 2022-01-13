@@ -50,11 +50,11 @@ runs:
         fi
       id: badge
       shell: bash
-      if: ${{ inputs.badge == "true" }}
+      if: ${{ inputs.badge }}
     - uses: actions/checkout@v2
       with:
         ref: badge
-      if: ${{ inputs.badge == "true" }}
+      if: ${{ inputs.badge }}
     - run: |
         git config user.name "GitHub Actions Bot"
         git config user.email "<>"
@@ -62,6 +62,6 @@ runs:
         git add coverage.svg
         git commit -m "update badge" coverage.svg || true
         git push
-      if: ${{ inputs.badge == "true" }}
+      if: ${{ inputs.badge }}
       shell: bash
     
