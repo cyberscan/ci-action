@@ -9,7 +9,7 @@ inputs:
     required: true
   badge:
     description: "Create badge."
-    default: false
+    default: ${{ false }}
 
 runs:
   using: "composite"
