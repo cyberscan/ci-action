@@ -18,8 +18,6 @@ from re import search as research, MULTILINE
 from .reports import JESTJunitXML, PytestJunitXML
 from .coverage import JestCoverageJsonSummaryParser, PythonCoverageParser
 
-from pprint import pprint
-
 SUPPORTED_LANGUAGES = [
     "python",
     "javascript"
