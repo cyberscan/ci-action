@@ -73,6 +73,7 @@ def main(language, github_token):
         repo.create_check_run(**check_run.to_dict())
     )
     pprint(check_run.to_dict())
+    pprint(event_dict)
     if "pull_request" in event_dict:
         coverage_raw = "<details><summary><link>expand</link>\n" + \
             f"<pre>{summary}</pre></summary><pre>{details}</pre></details>"
