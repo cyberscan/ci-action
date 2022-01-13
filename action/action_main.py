@@ -31,8 +31,8 @@ def main(language, github_token):
     repo = github.get_repo(environ["GITHUB_REPOSITORY"])
     with open(environ["GITHUB_EVENT_PATH"]) as filehandler:
         event_dict = jsonload(filehandler)
-    if "after" in event_dict:
-        commit_hash = event_dict["after"]
+    if "pull_request" in event_dict:
+        commit_hash = event_dict["pull_request"]["head"]["sha"]
     else:
         commit_hash = environ["GITHUB_SHA"]
 
