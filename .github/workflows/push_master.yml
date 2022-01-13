@@ -42,7 +42,7 @@ jobs:
         with:
           language: python
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          badge: true
+          badge: ${{ true }}
   snyk:
     runs-on: ubuntu-latest
     steps:
